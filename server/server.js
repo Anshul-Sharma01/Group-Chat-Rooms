@@ -20,6 +20,16 @@ io.on("connection", (socket) => {
 
     socket.emit("checkConn", "Socket is successfully connected");
 
+    // Broadcast when a user connects;
+    socket.broadcast.emit('broadcast', 'A new user has joined the chat');
+
+    // Runs when client disconnects
+    socket.on("disconnect", () => {
+        io.emit('broadcast', "A user has left the chat")
+    })
+
+    // io.emit();
+
     socket.on("message", (payload) => {
         console.log("Payload : ", payload);
         io.emit("message", payload);

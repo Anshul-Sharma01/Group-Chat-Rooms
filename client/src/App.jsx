@@ -10,14 +10,21 @@ const randomId = nanoid(5);
 
 function App() {
 
+  const [ messages, setMessages ] = useState([]);
+
   useEffect(() => {
     socket.on("checkConn", (message) => {
       console.log(message);
     });
 
+    socket.on("broadcast", (message) => {
+      setMessages(prevMessage => [...prevMessage, message]);
+    });
+
     return () => {
       socket.off("checkConn");
-    }
+      socket.off("broadcast");
+    };
   }, []);
 
   function checkSocketConnection(){
@@ -28,6 +35,15 @@ function App() {
     <>
       <h1>Chat Room</h1>
       <button onClick={checkSocketConnection}>Check Socket Connection</button>
+
+      <div className='chat-messages'>
+        
+        {
+          messages.map((msg, index) => (
+            <p key={index}> {msg} </p>
+          ))
+        }
+      </div>
     </>
   )
 
