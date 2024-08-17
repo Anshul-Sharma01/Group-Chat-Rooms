@@ -18,8 +18,7 @@ const io = socketio(server, {
 io.on("connection", (socket) => {
     console.log("New Web-Socket Connection");
 
-    socket.on("message", (message) => {
-    })
+    socket.emit("checkConn", "Socket is successfully connected");
 
     socket.on("message", (payload) => {
         console.log("Payload : ", payload);
