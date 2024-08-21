@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import { UserNameContext } from "../context/UserNameContext";
 
@@ -7,6 +7,7 @@ function ChatWindow() {
     const [socket, setSocket] = useState(null);
     const [chat, setChat] = useState("");
     const [chats, setChats] = useState([]);
+    const chatEndRef = useRef(null);
 
     const { userName } = useContext(UserNameContext);
 
@@ -50,6 +51,13 @@ function ChatWindow() {
         };
     }, []);
 
+    useEffect(() => {
+        //  Scroll to the bottom when a new chat message is added
+        if(chatEndRef.current){
+            chatEndRef.current.scrollIntoView({ behaviour : "smooth" });
+        }
+    }, [messages, chats]);
+
     return (
         <>
             <h1>Chat-Window</h1>
@@ -67,6 +75,7 @@ function ChatWindow() {
                             {chatData.message}
                         </p>
                     ))}
+                    <div ref={chatEndRef}/>
                 </section>
                 <div className="flex">
                     <input
