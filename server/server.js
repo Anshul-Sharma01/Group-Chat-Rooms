@@ -21,8 +21,8 @@ io.on("connection", (socket) => {
     socket.broadcast.emit('broadcast', 'A new user has joined the chat');
 
     // Listen for chat messages and broadcast them
-    socket.on("chats", (chatMessage) => {
-        io.emit("message", chatMessage); // Broadcast the chat message to all clients
+    socket.on("chats", (messagePayload) => {
+        io.emit("message", messagePayload); // Broadcast the chat message to all clients
     });
 
     // Emit when a user disconnects
